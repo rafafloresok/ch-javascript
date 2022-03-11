@@ -1,11 +1,36 @@
 /* VARIABLES */
-let addButtons = document.querySelectorAll(".agregar");
-let orderList = document.querySelector("ol");
-let showOrderBtn = document.querySelector(".btn-info");
-let orderContainer = document.querySelector(".container--pedido");
-let counter = document.querySelector(".contador");
-let count = 0;
-let sendOrder = document.querySelector(".enviar");
+let addButtons = document.querySelectorAll(".agregar"),
+    orderList = document.querySelector("#pedido"),
+    showOrderBtn = document.querySelector("#mostrar"),
+    orderContainer = document.querySelector("#container-pedido"),
+    counter = document.querySelector("#contador"),
+    count = 0,
+    sendOrder = document.querySelector("#enviar");
+
+/* FUNCION PARA MOSTRAR-OCULTAR PEDIDO */
+function toggleOrder() {
+    orderContainer.classList.toggle("display-none");
+    sendOrder.classList.toggle("display-none");
+    if (showOrderBtn.textContent == "Ver pedido") {
+        showOrderBtn.textContent = "Ocultar pedido";
+    } else {
+        showOrderBtn.textContent = "Ver pedido";
+    }
+}
+
+/* FUNCION PARA CALCULAR COSTO TOTAL */
+function calcCost() {
+    let infoProducts = document.querySelectorAll(".info-prod");
+    let prices = [];
+    infoProducts.forEach(el => prices.push(parseFloat(el.innerHTML.split("$").pop().slice(0,-2))));
+    let totalCost;
+    prices.length == 0 ? totalCost = 0 : totalCost = prices.reduce((acc,curr) => acc+curr);
+    /* ------------- */
+    /* MODIFICAR ACÁ */
+    /* ------------- */
+    console.clear();
+    console.log(`Costo total: $${totalCost}.-`);
+}
 
 /* CLASE PARA CONSTRUIR ITEMS DEL PEDIDO */
 class OrderItem {
@@ -16,7 +41,7 @@ class OrderItem {
         /* CREAR EL DIV CON LA INFO DEL PRODUCTO */
         let itemContent = document.createElement("div");
         itemContent.innerHTML = `<div class="fw-bold">${item}</div>${precio}`;
-        itemContent.classList.add("ms-2","me-auto");
+        itemContent.classList.add("info-prod","ms-2","me-auto");
 
         /* CREAR EL BOTON PARA REMOVER DEL PEDIDO */
         let removeBtn = document.createElement("span");
@@ -39,12 +64,14 @@ class OrderItem {
             listItem.remove();
             count--
             counter.textContent = count;
+            if (count == 0) {
+                toggleOrder();
+            }
+            calcCost()
         })
         
     }
 }
-
-
 
 /* AGREGAR FUNCIONALIDAD A TODOS LOS BOTONES PARA AGREGAR AL PEDIDO */
 for (let i = 0; i < addButtons.length; i++) {
@@ -54,16 +81,11 @@ for (let i = 0; i < addButtons.length; i++) {
         new OrderItem (item,precio);
         count++
         counter.textContent = count;
+        calcCost()
     })
 }
 
 /* AGREGAR FUNCIONALIDAD AL BOTON MOSTRAR PEDIDO */
 showOrderBtn.addEventListener("click", function () {
-    orderContainer.classList.toggle("display-none");
-    sendOrder.classList.toggle("display-none");
-    if (this.textContent == "Ver pedido") {
-        this.textContent = "Ocultar pedido";
-    } else {
-        this.textContent = "Ver pedido"
-    }
+    toggleOrder();
 })

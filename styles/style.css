@@ -1,24 +1,24 @@
-.container--pedido {
+#container-pedido {
     z-index: 1;
     background: rgba(28, 28, 28, 0.9);
     overflow-y: scroll;
 }
 
-.mostrar {
+#mostrar {
     z-index: 2;
     position: fixed;
     bottom: 1rem;
     right: 1rem;
 }
 
-.contador {
+#contador {
     z-index: 3;
     position: fixed;
     bottom: 1.5rem;
     right: 1.5rem;
 }
 
-.enviar {
+#enviar {
     z-index: 3;
     position: fixed;
     bottom: 1rem;

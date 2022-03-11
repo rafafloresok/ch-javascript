@@ -115,17 +115,17 @@
         </div>
 
         <!-- BOTON MOSTRAR PEDIDO Y CONTADOR -->
-        <button type="button" class="mostrar btn btn-info shadow pe-5">Ver pedido</button>
-        <span class="contador badge bg-primary rounded-pill">0</span>
+        <button type="button" id="mostrar" class="btn btn-info shadow pe-5">Ver pedido</button>
+        <span id="contador" class="badge bg-primary rounded-pill">0</span>
 
         <!-- BOTON ENVIAR PEDIDO -->
-        <button type="button" class="enviar btn btn-info display-none">Enviar pedido</button>
+        <button type="button" id="enviar" class="btn btn-info display-none">Enviar pedido</button>
 
         <!-- PEDIDO -->
-        <div class="container--pedido display-none container-fluid fixed-top vw-100 vh-100 p-2 pb-5">
-            <ol class="pedido list-group list-group-numbered">
+        <div id="container-pedido" class="display-none container-fluid fixed-top vw-100 vh-100 p-2 pb-5">
+            <ol id="pedido" class="pedido list-group list-group-numbered">
                 <!-- <li class="list-group-item d-flex justify-content-between align-items-start">
-                    <div class="ms-2 me-auto">
+                    <div class="info-prod ms-2 me-auto">
                         <div class="fw-bold">Subheading</div>
                         Content for list item
                     </div>
