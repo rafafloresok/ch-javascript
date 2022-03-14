@@ -20,10 +20,10 @@ function toggleOrder() {
 
 /* FUNCION PARA CALCULAR COSTO TOTAL */
 function calcCost() {
-    let infoProducts = document.querySelectorAll(".info-prod");
-    let prices = [];
+    let infoProducts = document.querySelectorAll(".info-prod"),
+        prices = [],
+        totalCost;
     infoProducts.forEach(el => prices.push(parseFloat(el.innerHTML.split("$").pop().slice(0,-2))));
-    let totalCost;
     prices.length == 0 ? totalCost = 0 : totalCost = prices.reduce((acc,curr) => acc+curr);
     /* ------------- */
     /* MODIFICAR ACÁ */
@@ -76,8 +76,8 @@ class OrderItem {
 /* AGREGAR FUNCIONALIDAD A TODOS LOS BOTONES PARA AGREGAR AL PEDIDO */
 for (let i = 0; i < addButtons.length; i++) {
     addButtons[i].addEventListener("click", function() {
-        let item = this.parentElement.childNodes[1].textContent;
-        let precio = this.parentElement.childNodes[3].textContent;
+        let item = this.parentElement.childNodes[1].textContent,
+            precio = this.parentElement.childNodes[3].textContent;
         new OrderItem (item,precio);
         count++
         counter.textContent = count;
