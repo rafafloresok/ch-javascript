@@ -5,7 +5,8 @@ let addButtons = document.querySelectorAll(".agregar"),
     orderContainer = document.querySelector("#container-pedido"),
     counter = document.querySelector("#contador"),
     count = 0,
-    sendOrder = document.querySelector("#enviar");
+    sendOrder = document.querySelector("#enviar"),
+    showTotalCost = document.querySelector("#show-total-cost");
 
 /* FUNCION PARA MOSTRAR-OCULTAR PEDIDO */
 function toggleOrder() {
@@ -18,18 +19,21 @@ function toggleOrder() {
     }
 }
 
-/* FUNCION PARA CALCULAR COSTO TOTAL */
+/* FUNCION PARA ACTUALIZAR COSTO TOTAL Y CONTADOR DE ITEMS*/
 function calcCost() {
     let infoProducts = document.querySelectorAll(".info-prod"),
         prices = [],
         totalCost;
     infoProducts.forEach(el => prices.push(parseFloat(el.innerHTML.split("$").pop().slice(0,-2))));
-    prices.length == 0 ? totalCost = 0 : totalCost = prices.reduce((acc,curr) => acc+curr);
-    /* ------------- */
-    /* MODIFICAR ACÁ */
-    /* ------------- */
-    console.clear();
-    console.log(`Costo total: $${totalCost}.-`);
+    counter.textContent = prices.length;
+    if (prices.length == 0) {
+        toggleOrder();
+        totalCost = 0;
+        showOrderBtn.disabled = true;
+    } else {
+        totalCost = prices.reduce((acc,curr) => acc+curr);
+    }
+    showTotalCost.textContent = totalCost;
 }
 
 /* CLASE PARA CONSTRUIR ITEMS DEL PEDIDO */
@@ -62,11 +66,6 @@ class OrderItem {
         /* AGREGAR FUNCIONALIDAD AL BOTON PARA REMOVER DEL PEDIDO */
         removeBtn.addEventListener("click", function () {
             listItem.remove();
-            count--
-            counter.textContent = count;
-            if (count == 0) {
-                toggleOrder();
-            }
             calcCost()
         })
         
@@ -79,9 +78,8 @@ for (let i = 0; i < addButtons.length; i++) {
         let item = this.parentElement.childNodes[1].textContent,
             precio = this.parentElement.childNodes[3].textContent;
         new OrderItem (item,precio);
-        count++
-        counter.textContent = count;
         calcCost()
+        showOrderBtn.disabled = false;
     })
 }
 
