@@ -1,3 +1,13 @@
+#front {
+    z-index: 4;
+    background-image: url(../images/front.jpg);
+    background-size: cover;
+}
+
+.cover-container {
+    background: rgba(28, 28, 28, 0.7);
+}
+
 #container-pedido {
     z-index: 1;
     background: rgba(28, 28, 28, 0.9);
