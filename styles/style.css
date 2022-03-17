@@ -35,10 +35,25 @@
     left: 1rem; 
 }
 
+#alert {
+    z-index: 2;
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    animation: fade-out 1s 1s ease;
+    animation-fill-mode: forwards;
+}
+
 .eliminar {
     cursor: pointer;
 }
 
 .display-none {
     display: none;
+}
+
+@keyframes fade-out {
+    100% {
+        opacity: 0;
+    }
 }

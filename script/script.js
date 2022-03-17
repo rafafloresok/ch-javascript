@@ -7,7 +7,8 @@ let addButtons = document.querySelectorAll(".agregar"),
     sendOrder = document.querySelector("#enviar"),
     showTotalCost = document.querySelector("#show-total-cost"),
     front = document.querySelector("#front"),
-    showMenuBtn = document.querySelector("#show-menu");
+    showMenuBtn = document.querySelector("#show-menu"),
+    alert = document.querySelector("#alert");
 
 /* CLASE PARA CONSTRUIR ITEMS DEL PEDIDO */
 class OrderItem {
@@ -60,10 +61,21 @@ function calcCost() {
     if (prices.length == 0) {
         toggleOrder();
         showTotalCost.textContent = 0;
-        showOrderBtn.disabled = true;
+        showOrderBtn.classList.add("disabled");
     } else {
         showTotalCost.textContent = prices.reduce((acc,curr) => acc+curr);
     }
+}
+
+/* FUNCION PARA MOSTRAR ALERTA DE ITEM AGREGADO */
+function showAlert(item) {
+    alert.textContent = `Agregado: ${item}`;
+    alert.classList.remove("display-none");
+    addButtons.forEach(el => el.classList.add("disabled"));
+    setTimeout(function () {
+        alert.classList.add("display-none");
+        addButtons.forEach(el => el.classList.remove("disabled"));
+    },2000)
 }
 
 /* AGREGAR FUNCIONALIDAD AL BOTÓN DE VER MENÚ */
@@ -78,7 +90,8 @@ for (let i = 0; i < addButtons.length; i++) {
             precio = this.parentElement.childNodes[3].textContent;
         new OrderItem (item,precio);
         calcCost()
-        showOrderBtn.disabled = false;
+        showOrderBtn.classList.remove("disabled");
+        showAlert(item);
     })
 }
 
