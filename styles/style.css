@@ -40,8 +40,7 @@
     position: fixed;
     bottom: 3rem;
     right: 1rem;
-    animation: alert-out 0.7s 0.7s ease;
-    animation-fill-mode: forwards;
+    animation: alert-out 0.7s 0.7s ease forwards;
 }
 
 .eliminar {
@@ -55,7 +54,7 @@
 @keyframes alert-out {
     100% {
         opacity: 0;
-        transform: translateY(90%);
+        transform: translateY(90%) translateX(45%) scale(0);
     }
 }
 
@@ -85,11 +84,11 @@
 }
 
 .card:hover {
-    animation: escalar 1s ease;
+    animation: card-scale 1s ease;
     animation-fill-mode: forwards;
 }
 
-@keyframes escalar {
+@keyframes card-scale {
     100% {
         transform: scale(1.05);
     }
