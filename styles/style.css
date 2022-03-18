@@ -40,7 +40,7 @@
     position: fixed;
     top: 1rem;
     right: 1rem;
-    animation: fade-out 1s 1s ease;
+    animation: fade-out 0.7s 0.7s ease;
     animation-fill-mode: forwards;
 }
 
@@ -55,5 +55,41 @@
 @keyframes fade-out {
     100% {
         opacity: 0;
+    }
+}
+
+.to-up {
+    animation: to-up 1s ease;
+    animation-fill-mode: forwards;
+}
+
+@keyframes to-up {
+    100% {
+        transform: translateY(-100%);
+    }
+}
+
+.from-up {
+    animation: from-up 1s ease;
+    animation-fill-mode: forwards;
+}
+
+@keyframes from-up {
+    0% {
+        transform: translateY(-100%);
+    }
+    100% {
+        transform: translateY(0%);
+    }
+}
+
+.card:hover {
+    animation: escalar 1s ease;
+    animation-fill-mode: forwards;
+}
+
+@keyframes escalar {
+    100% {
+        transform: scale(1.05);
     }
 }

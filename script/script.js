@@ -47,9 +47,27 @@ class OrderItem {
 
 /* FUNCION PARA MOSTRAR-OCULTAR PEDIDO */
 function toggleOrder() {
-    orderContainer.classList.toggle("display-none");
-    sendOrder.classList.toggle("display-none");
-    showOrderBtn.textContent == "Ver pedido" ? showOrderBtn.textContent = "Ocultar pedido" : showOrderBtn.textContent = "Ver pedido";
+    orderContainer.classList.toggle("from-up");
+    orderContainer.classList.toggle("to-up");
+    if (showOrderBtn.textContent == "Ver pedido") {
+        orderContainer.classList.toggle("display-none");
+        showOrderBtn.classList.add("disabled");
+        setTimeout( () => {
+            showOrderBtn.classList.remove("disabled");
+            showOrderBtn.textContent = "Ocultar pedido";
+            sendOrder.classList.toggle("display-none");
+        },1000);
+    } else {
+        sendOrder.classList.toggle("display-none");
+        showOrderBtn.classList.add("disabled");
+        setTimeout( () => {
+            if (showTotalCost.textContent > 0) {
+                showOrderBtn.classList.remove("disabled");
+            };
+            showOrderBtn.textContent = "Ver pedido";
+            orderContainer.classList.toggle("display-none");
+        },1000);
+    };
 }
 
 /* FUNCION PARA ACTUALIZAR COSTO TOTAL Y CONTADOR DE ITEMS*/
@@ -75,12 +93,12 @@ function showAlert(item) {
     setTimeout(function () {
         alert.classList.add("display-none");
         addButtons.forEach(el => el.classList.remove("disabled"));
-    },2000)
+    },1200);
 }
 
 /* AGREGAR FUNCIONALIDAD AL BOTÓN DE VER MENÚ */
 showMenuBtn.addEventListener("click", function () {
-    front.classList.add("display-none");
+    front.classList.add("to-up");
 })
 
 /* AGREGAR FUNCIONALIDAD A TODOS LOS BOTONES PARA AGREGAR AL PEDIDO */
