@@ -39,8 +39,11 @@ class OrderItem {
         
         /* AGREGAR FUNCIONALIDAD AL BOTON PARA REMOVER EL ITEM */
         removeBtn.addEventListener("click", function () {
-            listItem.remove();
-            calcCost()
+            listItem.classList.add("out-item");
+            setTimeout(() => {
+                listItem.remove();
+                calcCost();
+            },800);
         })
     }
 }
@@ -93,6 +96,7 @@ function showAlert(item) {
     setTimeout(function () {
         alert.classList.add("display-none");
         addButtons.forEach(el => el.classList.remove("disabled"));
+        calcCost();
     },1200);
 }
 
@@ -107,7 +111,6 @@ for (let i = 0; i < addButtons.length; i++) {
         let item = this.parentElement.childNodes[1].textContent,
             precio = this.parentElement.childNodes[3].textContent;
         new OrderItem (item,precio);
-        calcCost()
         showOrderBtn.classList.remove("disabled");
         showAlert(item);
     })

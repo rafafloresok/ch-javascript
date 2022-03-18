@@ -38,9 +38,9 @@
 #alert {
     z-index: 2;
     position: fixed;
-    top: 1rem;
+    bottom: 3rem;
     right: 1rem;
-    animation: fade-out 0.7s 0.7s ease;
+    animation: alert-out 0.7s 0.7s ease;
     animation-fill-mode: forwards;
 }
 
@@ -52,9 +52,10 @@
     display: none;
 }
 
-@keyframes fade-out {
+@keyframes alert-out {
     100% {
         opacity: 0;
+        transform: translateY(90%);
     }
 }
 
@@ -91,5 +92,17 @@
 @keyframes escalar {
     100% {
         transform: scale(1.05);
+    }
+}
+
+.out-item {
+    animation: out-item 1s 0s ease;
+    animation-fill-mode: forwards;
+}
+
+@keyframes out-item {
+    100% {
+        opacity: 0;
+        transform: translatex(-100%);
     }
 }
