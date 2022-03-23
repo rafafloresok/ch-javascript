@@ -1,3 +1,228 @@
+/* LISTA DE PRODUCTOS */
+let menuItems = [
+    {
+        type: "Entradas",
+        description: "Rabas",
+        price: 1590,
+        available: false,
+        source: "images/rabas.jpg"
+    },
+    {
+        type: "Entradas",
+        description: "Langostinos empanados",
+        price: 1600,
+        available: true,
+        source: "images/langostinos.jpg"
+    },
+    {
+        type: "Entradas",
+        description: "Berenjena Parmesana",
+        price: 990,
+        available: true,
+        source: "images/berenjena.jpg"
+    },
+    {
+        type: "Entradas",
+        description: "Bruschetta",
+        price: 1200,
+        available: true,
+        source: "images/bruschetta.jpg"
+    },
+    {
+        type: "Entradas",
+        description: "Mollejas crocantes",
+        price: 1650,
+        available: true,
+        source: "images/mollejas.jpg"
+    },
+    {
+        type: "Principales",
+        description: "Ojo de bife con papas asadas",
+        price: 1750,
+        available: true,
+        source: "images/ojo_de_bife.jpg"
+    },
+    {
+        type: "Principales",
+        description: "Pollo a la mostaza con vegetales asados",
+        price: 1350,
+        available: true,
+        source: "images/pollo.jpg"
+    },
+    {
+        type: "Principales",
+        description: "Trucha con arroz cremoso",
+        price: 1650,
+        available: false,
+        source: "images/trucha.jpg"
+    },
+    {
+        type: "Principales",
+        description: "Entraña con puré rústico",
+        price: 1400,
+        available: true,
+        source: "images/entrania.jpg"
+    },
+    {
+        type: "Principales",
+        description: "Ravioles de salmón con salsa de tomates",
+        price: 1650,
+        available: true,
+        source: "images/ravioles.jpg"
+    },
+    {
+        type: "Postres",
+        description: "Volcán de chocolate",
+        price: 790,
+        available: true,
+        source: "images/volcan.jpg"
+    },
+    {
+        type: "Postres",
+        description: "Creme brulee",
+        price: 500,
+        available: true,
+        source: "images/creme_brulee.jpg"
+    },
+    {
+        type: "Postres",
+        description: "Flan casero",
+        price: 520,
+        available: true,
+        source: "images/flan.jpg"
+    },
+    {
+        type: "Postres",
+        description: "Ensalada de frutas",
+        price: 590,
+        available: true,
+        source: "images/ensalada_frutas.jpg"
+    },
+    {
+        type: "Postres",
+        description: "Cheesecake con frutos del bosque",
+        price: 560,
+        available: false,
+        source: "images/cheseecake.jpg"
+    },
+    {
+        type: "Bebidas",
+        description: "Agua sin gas",
+        price: 210,
+        available: true,
+        source: "images/agua.jpg"
+    },
+    {
+        type: "Bebidas",
+        description: "Jugo exprimido de naranja",
+        price: 400,
+        available: true,
+        source: "images/exprimido.jpg"
+    },
+    {
+        type: "Bebidas",
+        description: "Cerveza Cape Horn",
+        price: 560,
+        available: false,
+        source: "images/cerveza.jpg"
+    },
+    {
+        type: "Bebidas",
+        description: "Vino Tinto Amalaya Corte Único",
+        price: 1100,
+        available: true,
+        source: "images/vino_tinto.jpg"
+    },
+    {
+        type: "Bebidas",
+        description: "Vino Blanco Norton Cosecha Tardía",
+        price: 900,
+        available: true,
+        source: "images/vino_blanco.jpg"
+    },
+];
+
+/* VARIABLES */
+let rowEntradas = document.querySelector("#row-entradas"),
+    rowPrincipales = document.querySelector("#row-principales"),
+    rowPostres = document.querySelector("#row-postres"),
+    rowBebidas = document.querySelector("#row-bebidas");
+
+
+/* CLASE PARA CONSTRUIR ITEMS DEL MENU */
+class MenuItem {
+    constructor(type, description, price, available, source) {
+        this.createCard(type, description, price, available, source);
+    }
+    createCard(type, description, price, available, source) {
+        /* CREAR DIV COL. INSERTAR EN DIV ROW (VER TYPE) */
+        let divCol = document.createElement("div");
+        divCol.classList.add("col-12","col-sm6","col-md-4","col-lg-3");
+        switch (type) {
+            case "Entradas":
+                rowEntradas.appendChild(divCol);
+                break;
+            case "Principales":
+                rowPrincipales.appendChild(divCol);
+                break;
+            case "Postres":
+                rowPostres.appendChild(divCol);
+                break;
+            case "Bebidas":
+                rowBebidas.appendChild(divCol);
+                break;
+        }
+
+        /* CREAR DIV CARD. INSERTAR EN COL */
+        let divCard = document.createElement("div");
+        divCard.classList.add("card","mx-auto");
+        divCol.appendChild(divCard);
+
+        /* CREAR IMG. INSERTAR EN CARD */
+        let cardImg = document.createElement("img");
+        cardImg.classList.add("card-img-top");
+        cardImg.src = source;
+        cardImg.alt = description;
+        divCard.appendChild(cardImg); 
+
+        /* CREAR DIV CARD-BODY. INSERTAR EN CARD */
+        let cardBody = document.createElement("div");
+        cardBody.classList.add("card-body");
+        divCard.appendChild(cardBody);
+
+        /* CREAR H5 CARD-TITLE. INSERTAR EN CARD-BODY */
+        let cardTitle = document.createElement("h5");
+        cardTitle.classList.add("card-title");
+        cardTitle.textContent = description;
+        cardBody.appendChild(cardTitle);
+
+        /* CREAR P CARD-TEXT. INSERTAR EN CARD-BODY */
+        let cardText = document.createElement("p");
+        cardText.classList.add("card-text");
+        cardText.textContent = `$${price}.-`;
+        cardBody.appendChild(cardText);
+
+        /* CREAR A AGREGAR (VER DISABLE). INSERTAR EN CARD-BODY */
+        let buttonAdd = document.createElement("a");
+        buttonAdd["description"] = description;
+        buttonAdd["price"] = price;
+        if (!available) {
+            buttonAdd.classList.add("agregar", "btn", "btn-secondary","disabled");
+            buttonAdd.textContent = "No disponible";
+        } else {
+            buttonAdd.classList.add("agregar", "btn", "btn-primary");
+            buttonAdd.textContent = "Agregar al pedido";
+        }
+        cardBody.appendChild(buttonAdd);
+    }
+}
+
+/* CREAR ITEMS DEL MENU */
+
+for (const menuItem of menuItems) {
+    new MenuItem(menuItem.type, menuItem.description, menuItem.price, menuItem.available, menuItem.source);
+}
+
 /* VARIABLES */
 let addButtons = document.querySelectorAll(".agregar"),
     orderList = document.querySelector("#pedido"),
@@ -10,7 +235,9 @@ let addButtons = document.querySelectorAll(".agregar"),
     showMenuBtn = document.querySelector("#show-menu"),
     alert = document.querySelector("#alert");
 
-/* CLASE PARA CONSTRUIR ITEMS DEL PEDIDO */
+console.dir(addButtons);
+
+    /* CLASE PARA CONSTRUIR ITEMS DEL PEDIDO */
 class OrderItem {
     constructor(item, precio) {
         this.crearDiv(item, precio);
@@ -18,7 +245,7 @@ class OrderItem {
     crearDiv(item, precio) {
         /* CREAR EL DIV CON LA INFO DEL PRODUCTO */
         let itemContent = document.createElement("div");
-        itemContent.innerHTML = `<div class="fw-bold">${item}</div>${precio}`;
+        itemContent.innerHTML = `<div class="fw-bold">${item}</div>$${precio}.-`;
         itemContent.classList.add("info-prod","ms-2","me-auto");
 
         /* CREAR EL BOTON PARA REMOVER EL ITEM */
@@ -38,7 +265,7 @@ class OrderItem {
         orderList.appendChild(listItem);
         
         /* AGREGAR FUNCIONALIDAD AL BOTON PARA REMOVER EL ITEM */
-        removeBtn.addEventListener("click", function () {
+        removeBtn.addEventListener("click", () => {
             listItem.classList.add("out-item");
             setTimeout(() => {
                 listItem.remove();
@@ -92,24 +319,22 @@ function calcCost() {
 function showAlert(item) {
     alert.textContent = `Agregado: ${item}`;
     alert.classList.remove("display-none");
-    addButtons.forEach(el => el.classList.add("disabled"));
-    setTimeout(function () {
+    setTimeout(() => {
         alert.classList.add("display-none");
-        addButtons.forEach(el => el.classList.remove("disabled"));
         calcCost();
     },1200);
 }
 
 /* AGREGAR FUNCIONALIDAD AL BOTÓN DE VER MENÚ */
-showMenuBtn.addEventListener("click", function () {
+showMenuBtn.addEventListener("click", () => {
     front.classList.add("to-up");
 })
 
 /* AGREGAR FUNCIONALIDAD A TODOS LOS BOTONES PARA AGREGAR AL PEDIDO */
 for (let i = 0; i < addButtons.length; i++) {
     addButtons[i].addEventListener("click", function() {
-        let item = this.parentElement.childNodes[1].textContent,
-            precio = this.parentElement.childNodes[3].textContent;
+        let item = this.description,
+            precio = this.price;
         new OrderItem (item,precio);
         showOrderBtn.classList.remove("disabled");
         showAlert(item);
@@ -117,6 +342,4 @@ for (let i = 0; i < addButtons.length; i++) {
 }
 
 /* AGREGAR FUNCIONALIDAD AL BOTON MOSTRAR PEDIDO */
-showOrderBtn.addEventListener("click", function () {
-    toggleOrder();
-})
+showOrderBtn.addEventListener("click", () => toggleOrder())

@@ -36,7 +36,7 @@
 }
 
 #alert {
-    z-index: 2;
+    z-index: 3;
     position: fixed;
     bottom: 3rem;
     right: 1rem;
