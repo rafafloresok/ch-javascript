@@ -1,3 +1,13 @@
+/* GENERICOS */
+.display-none {
+    display: none;
+}
+
+.display-flex {
+    display: flex;
+}
+
+/* PORTADA */
 #front {
     z-index: 4;
     background-image: url(../images/front.jpg);
@@ -8,6 +18,25 @@
     background: rgba(28, 28, 28, 0.7);
 }
 
+#settings {
+    z-index: 4;
+}
+
+/* LOG IN */
+#container-log-in {
+    z-index: 5;
+    background: rgba(28, 28, 28, 0.9);
+    overflow-y: scroll;
+}
+
+/* SETTINGS */
+#container-settings {
+    z-index: 6;
+    background: rgba(28, 28, 28, 0.9);
+    overflow-y: scroll;
+}
+
+/* MENU - PEDIDO */
 #container-pedido {
     z-index: 1;
     background: rgba(28, 28, 28, 0.9);
@@ -29,7 +58,7 @@
 }
 
 #enviar {
-    z-index: 3;
+    /* z-index: 3; */
     position: fixed;
     bottom: 1rem;
     left: 1rem; 
@@ -45,10 +74,6 @@
 
 .eliminar {
     cursor: pointer;
-}
-
-.display-none {
-    display: none;
 }
 
 @keyframes alert-out {

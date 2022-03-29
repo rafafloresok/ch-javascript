@@ -146,8 +146,25 @@ let menuItems = [
 let rowEntradas = document.querySelector("#row-entradas"),
     rowPrincipales = document.querySelector("#row-principales"),
     rowPostres = document.querySelector("#row-postres"),
-    rowBebidas = document.querySelector("#row-bebidas");
-
+    rowBebidas = document.querySelector("#row-bebidas"),
+    settingsList = document.querySelector("#settings-list"),
+    orderList = document.querySelector("#pedido"),
+    showOrderBtn = document.querySelector("#mostrar"),
+    orderContainer = document.querySelector("#container-pedido"),
+    counter = document.querySelector("#contador"),
+    sendOrder = document.querySelector("#enviar"),
+    showTotalCost = document.querySelector("#show-total-cost"),
+    front = document.querySelector("#front"),
+    showMenuBtn = document.querySelector("#show-menu"),
+    alert = document.querySelector("#alert"),
+    settingsBtn = document.querySelector("#settings"),
+    logInContainer = document.querySelector("#container-log-in"),
+    logInCancelBtn = document.querySelector("#cancel-log-in"),
+    logInBtn = document.querySelector("#log-in-button"),
+    settingsContainer = document.querySelector("#container-settings"),
+    saveSettingsBtn = document.querySelector("#save-settings"),
+    cancelSettingsBtn = document.querySelector("#cancel-settings"),
+    addButtons;
 
 /* CLASE PARA CONSTRUIR ITEMS DEL MENU */
 class MenuItem {
@@ -217,27 +234,145 @@ class MenuItem {
     }
 }
 
-/* CREAR ITEMS DEL MENU */
+/* CLASE PARA CONSTRUIR ITEMS DE LA LISTA DE CONFIGURACION */
+class SettingsItem {
+    constructor(type, description, price, available, source) {
+        this.createRow(type, description, price, available, source);
+    }
+    createRow(type, description, price, available, source) {
+        /* CREAR DIV ROW. INSERTAR EN DIV SETTINGS-LIST */
+        let divRow = document.createElement("div");
+        divRow.classList.add("row");
+        settingsList.appendChild(divRow);
 
-for (const menuItem of menuItems) {
-    new MenuItem(menuItem.type, menuItem.description, menuItem.price, menuItem.available, menuItem.source);
+        /* CREAR DIV COL TYPE. INSERTAR EN ROW */
+        let divColType = document.createElement("div");
+        divColType.classList.add("col-1","p-1");
+        divRow.appendChild(divColType);
+        let inputType = document.createElement("select");
+        inputType.classList.add("form-select","type");
+        inputType.disabled = true;
+        divColType.appendChild(inputType);
+        let option1 = document.createElement("option");
+        option1.value = "Entradas";
+        option1.textContent = "Entradas";
+        inputType.appendChild(option1);
+        let option2 = document.createElement("option");
+        option2.value = "Principales";
+        option2.textContent = "Principales";
+        inputType.appendChild(option2);
+        let option3 = document.createElement("option");
+        option3.value = "Postres";
+        option3.textContent = "Postres";
+        inputType.appendChild(option3);
+        let option4 = document.createElement("option");
+        option4.value = "Bebidas";
+        option4.textContent = "Bebidas";
+        inputType.appendChild(option4);
+        inputType.value = type;
+        
+        /* CREAR DIV COL DESCRIPTION. INSERTAR EN ROW */
+        let divColDesc = document.createElement("div");
+        divColDesc.classList.add("col-4","p-1");
+        divRow.appendChild(divColDesc);
+        let inputDesc = document.createElement("input");
+        inputDesc.classList.add("form-control","description");
+        inputDesc.type = "text";
+        inputDesc.value = description;
+        inputDesc.disabled = true;
+        divColDesc.appendChild(inputDesc);
+
+        /* CREAR DIV COL PRICE. INSERTAR EN ROW */
+        let divColPrice = document.createElement("div");
+        divColPrice.classList.add("col-1","p-1");
+        divRow.appendChild(divColPrice);
+        let inputPrice = document.createElement("input");
+        inputPrice.classList.add("form-control","price");
+        inputPrice.type = "text";
+        inputPrice.value = price;
+        inputPrice.disabled = true;
+        divColPrice.appendChild(inputPrice);
+
+        /* CREAR DIV COL AVAILABLE. INSERTAR EN ROW */
+        let divColAvailable = document.createElement("div");
+        divColAvailable.classList.add("col-1","p-1");
+        divRow.appendChild(divColAvailable);
+        let inputAvailable = document.createElement("select");
+        inputAvailable.classList.add("form-select","available");
+        let optionA = document.createElement("option");
+        optionA.value = "Si";
+        optionA.textContent = "Si";
+        inputAvailable.appendChild(optionA);
+        let optionB = document.createElement("option");
+        optionB.value = "No";
+        optionB.textContent = "No";
+        inputAvailable.appendChild(optionB);
+        available ? inputAvailable.value = "Si" : inputAvailable.value = "No" ;
+        inputAvailable.disabled = true;
+        divColAvailable.appendChild(inputAvailable);
+
+        /* CREAR DIV COL IMG. INSERTAR EN ROW */
+        let divColImg = document.createElement("div");
+        divColImg.classList.add("col-3","p-1");
+        divRow.appendChild(divColImg);
+        let inputImg = document.createElement("input");
+        inputImg.classList.add("form-control","source");
+        inputImg.type = "text";
+        inputImg.value = source;
+        inputImg.disabled = true;
+        divColImg.appendChild(inputImg);
+
+        /* CREAR DIV COL MODIFY. INSERTAR EN ROW */
+        let divColModify = document.createElement("div");
+        divColModify.classList.add("col-2","p-1");
+        divRow.appendChild(divColModify);
+        let btnModify = document.createElement("button");
+        btnModify.type = "button";
+        btnModify.classList.add("btn","btn-secondary");
+        btnModify.innerHTML = `<i class="bi bi-pencil"></i>`;
+        btnModify.addEventListener("click", () => {
+            inputType.toggleAttribute("disabled");
+            inputDesc.toggleAttribute("disabled");
+            inputPrice.toggleAttribute("disabled");
+            inputAvailable.toggleAttribute("disabled");
+            inputImg.toggleAttribute("disabled");
+        });
+        divColModify.appendChild(btnModify);
+        let btnRemove = document.createElement("button");
+        btnRemove.type = "button";
+        btnRemove.classList.add("btn","btn-danger");
+        btnRemove.innerHTML = `<i class="bi bi-trash"></i>`;
+        btnRemove.addEventListener("click", () => divRow.remove());
+        divColModify.appendChild(btnRemove);
+    }
 }
 
-/* VARIABLES */
-let addButtons = document.querySelectorAll(".agregar"),
-    orderList = document.querySelector("#pedido"),
-    showOrderBtn = document.querySelector("#mostrar"),
-    orderContainer = document.querySelector("#container-pedido"),
-    counter = document.querySelector("#contador"),
-    sendOrder = document.querySelector("#enviar"),
-    showTotalCost = document.querySelector("#show-total-cost"),
-    front = document.querySelector("#front"),
-    showMenuBtn = document.querySelector("#show-menu"),
-    alert = document.querySelector("#alert");
+/* CREAR MENU Y LISTA DE CONFIGURACION */
+function createMenuAndSettings(products) {
+    rowEntradas.innerHTML = "";
+    rowPrincipales.innerHTML = "";
+    rowPostres.innerHTML = "";
+    rowBebidas.innerHTML = "";
+    settingsList.innerHTML = "";
+    for (const menuItem of products) {
+        new MenuItem(menuItem.type, menuItem.description, menuItem.price, menuItem.available, menuItem.source);
+        new SettingsItem(menuItem.type, menuItem.description, menuItem.price, menuItem.available, menuItem.source);
+    }
+    /* AGREGAR FUNCIONALIDAD A TODOS LOS BOTONES PARA AGREGAR AL PEDIDO */
+    addButtons = document.querySelectorAll(".agregar");
+    for (let i = 0; i < addButtons.length; i++) {
+        addButtons[i].addEventListener("click", function() {
+            let item = this.description,
+                precio = this.price;
+            new OrderItem (item,precio);
+            showOrderBtn.classList.remove("disabled");
+            showAlert(item);
+        })
+    }
+}
+createMenuAndSettings(menuItems);
 
-console.dir(addButtons);
-
-    /* CLASE PARA CONSTRUIR ITEMS DEL PEDIDO */
+/* CLASE PARA CONSTRUIR ITEMS DEL PEDIDO */
 class OrderItem {
     constructor(item, precio) {
         this.crearDiv(item, precio);
@@ -277,25 +412,21 @@ class OrderItem {
 
 /* FUNCION PARA MOSTRAR-OCULTAR PEDIDO */
 function toggleOrder() {
-    orderContainer.classList.toggle("from-up");
-    orderContainer.classList.toggle("to-up");
     if (showOrderBtn.textContent == "Ver pedido") {
-        orderContainer.classList.toggle("display-none");
+        showSection(orderContainer);
         showOrderBtn.classList.add("disabled");
         setTimeout( () => {
             showOrderBtn.classList.remove("disabled");
             showOrderBtn.textContent = "Ocultar pedido";
-            sendOrder.classList.toggle("display-none");
         },1000);
     } else {
-        sendOrder.classList.toggle("display-none");
+        hideSection(orderContainer);
         showOrderBtn.classList.add("disabled");
         setTimeout( () => {
             if (showTotalCost.textContent > 0) {
                 showOrderBtn.classList.remove("disabled");
             };
             showOrderBtn.textContent = "Ver pedido";
-            orderContainer.classList.toggle("display-none");
         },1000);
     };
 }
@@ -325,21 +456,71 @@ function showAlert(item) {
     },1200);
 }
 
+/* FUNCION PARA MOSTRAR SECCION */
+function showSection(section) {
+    section.classList.remove("display-none");
+    section.classList.add("from-up");
+    section.classList.remove("to-up");
+}
+
+/* FUNCION PARA OCULTAR SECCION */
+function hideSection(section) {
+    section.classList.add("to-up");
+    section.classList.remove("from-up");
+    setTimeout( () => {
+        section.classList.add("display-none");
+    },1000);
+}
+
 /* AGREGAR FUNCIONALIDAD AL BOTÓN DE VER MENÚ */
 showMenuBtn.addEventListener("click", () => {
-    front.classList.add("to-up");
+    settingsBtn.classList.add("display-none");
+    hideSection(front);
 })
-
-/* AGREGAR FUNCIONALIDAD A TODOS LOS BOTONES PARA AGREGAR AL PEDIDO */
-for (let i = 0; i < addButtons.length; i++) {
-    addButtons[i].addEventListener("click", function() {
-        let item = this.description,
-            precio = this.price;
-        new OrderItem (item,precio);
-        showOrderBtn.classList.remove("disabled");
-        showAlert(item);
-    })
-}
 
 /* AGREGAR FUNCIONALIDAD AL BOTON MOSTRAR PEDIDO */
 showOrderBtn.addEventListener("click", () => toggleOrder())
+
+/* AGREGAR FUNCIONALIDAD AL BOTON SETTINGS */
+settingsBtn.addEventListener("click", () => {
+    showSection(logInContainer);
+})
+
+/* AGREGAR FUNCIONALIDAD AL BOTON CANCELAR LOG IN */
+logInCancelBtn.addEventListener("click", () => {
+    hideSection(logInContainer);
+})
+
+/* AGREGAR FUNCIONALIDAD AL BOTON LOG IN */
+logInBtn.addEventListener("click", () => {
+    hideSection(logInContainer);
+    showSection(settingsContainer);
+})
+
+/* AGREGAR FUNCIONALIDAD GUARDAR CAMBIOS */
+saveSettingsBtn.addEventListener("click", () => {
+    let newMenuItems = [];
+    let types = document.querySelectorAll(".type");
+    let descriptions = document.querySelectorAll(".description");
+    let prices = document.querySelectorAll(".price");
+    let availables = document.querySelectorAll(".available");
+    let sources = document.querySelectorAll(".source");
+    for (let i = 0; i < types.length; i++) {
+        let obj = {};
+        obj.type = types[i].value;
+        obj.description = descriptions[i].value;
+        obj.price = parseFloat(prices[i].value);
+        availables[i].value === "Si" ? obj.available = true : obj.available = false ;
+        obj.source = sources[i].value;
+        newMenuItems.push(obj);
+    }
+    console.log(newMenuItems);
+    hideSection(settingsContainer);
+    createMenuAndSettings(newMenuItems);
+})
+
+/* AGREGAR FUNCIONALIDAD AL CANCELAR CAMBIOS */
+cancelSettingsBtn.addEventListener("click", () => {
+    hideSection(settingsContainer);
+    createMenuAndSettings(menuItems);
+})
