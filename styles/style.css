@@ -67,7 +67,7 @@
     animation: alert-out 0.7s 0.7s ease forwards;
 }
 
-.eliminar {
+.eliminar, #home-btn {
     cursor: pointer;
 }
 

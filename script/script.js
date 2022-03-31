@@ -170,7 +170,7 @@ let rowEntradas = document.querySelector("#row-entradas"),
     cancelSettingsBtn = document.querySelector("#cancel-settings"),
     cart = [],
     addButtons,
-    homeBtns = document.querySelectorAll(".home-btn");
+    homeBtn = document.querySelector("#home-btn");
 ;
 
 //CLASE PARA CREAR ITEMS DEL CARRITO
@@ -512,7 +512,7 @@ createMenuAndSettings(menuItems);
 showMenuBtn.addEventListener("click", () => hideSection(front));
 
 //AGREGAR FUNCIONALIDAD A BOTONES HOME
-homeBtns.forEach(el => el.addEventListener("click", () => showSection(front)));
+homeBtn.addEventListener("click", () => showSection(front));
 
 //AGREGAR FUNCIONALIDAD AL BOTON MOSTRAR PEDIDO
 showOrderBtn.addEventListener("click", () => toggleOrder());
