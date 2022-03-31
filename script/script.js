@@ -161,15 +161,16 @@ let rowEntradas = document.querySelector("#row-entradas"),
     front = document.querySelector("#front"),
     showMenuBtn = document.querySelector("#show-menu"),
     alert = document.querySelector("#alert"),
-    settingsBtn = document.querySelector("#settings"),
+    settingsBtn = document.querySelector("#settings-btn"),
     logInContainer = document.querySelector("#container-log-in"),
     logInCancelBtn = document.querySelector("#cancel-log-in"),
     logInBtn = document.querySelector("#log-in-button"),
     settingsContainer = document.querySelector("#container-settings"),
     saveSettingsBtn = document.querySelector("#save-settings"),
     cancelSettingsBtn = document.querySelector("#cancel-settings"),
-    cart = [],//JSON.parse(localStorage.getItem("cart"))
-    addButtons
+    cart = [],
+    addButtons,
+    homeBtns = document.querySelectorAll(".home-btn");
 ;
 
 //CLASE PARA CREAR ITEMS DEL CARRITO
@@ -507,30 +508,26 @@ takeCart();
 //CREAR MENU Y LISTA DE CONFIGURACION
 createMenuAndSettings(menuItems);
 
-//AGREGAR FUNCIONALIDAD AL BOTÓN DE VER MENÚ
-showMenuBtn.addEventListener("click", () => {
-    settingsBtn.classList.add("display-none");
-    hideSection(front);
-})
+//AGREGAR FUNCIONALIDAD AL BOTON DE VER MENÚ
+showMenuBtn.addEventListener("click", () => hideSection(front));
+
+//AGREGAR FUNCIONALIDAD A BOTONES HOME
+homeBtns.forEach(el => el.addEventListener("click", () => showSection(front)));
 
 //AGREGAR FUNCIONALIDAD AL BOTON MOSTRAR PEDIDO
-showOrderBtn.addEventListener("click", () => toggleOrder())
+showOrderBtn.addEventListener("click", () => toggleOrder());
 
 //AGREGAR FUNCIONALIDAD AL BOTON SETTINGS
-settingsBtn.addEventListener("click", () => {
-    showSection(logInContainer);
-})
+settingsBtn.addEventListener("click", () => showSection(logInContainer));
 
 //AGREGAR FUNCIONALIDAD AL BOTON CANCELAR LOG IN
-logInCancelBtn.addEventListener("click", () => {
-    hideSection(logInContainer);
-})
+logInCancelBtn.addEventListener("click", () => hideSection(logInContainer));
 
 //AGREGAR FUNCIONALIDAD AL BOTON LOG IN
 logInBtn.addEventListener("click", () => {
     hideSection(logInContainer);
     showSection(settingsContainer);
-})
+});
 
 //AGREGAR FUNCIONALIDAD AL BOTON GUARDAR CAMBIOS
 saveSettingsBtn.addEventListener("click", () => {

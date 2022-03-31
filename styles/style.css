@@ -3,10 +3,6 @@
     display: none;
 }
 
-.display-flex {
-    display: flex;
-}
-
 /* PORTADA */
 #front {
     z-index: 4;
@@ -16,10 +12,6 @@
 
 .cover-container {
     background: rgba(28, 28, 28, 0.7);
-}
-
-#settings {
-    z-index: 4;
 }
 
 /* LOG IN */
@@ -37,6 +29,9 @@
 }
 
 /* MENU - PEDIDO */
+#nav-bar {
+    z-index: 1;
+}
 #container-pedido {
     z-index: 1;
     background: rgba(28, 28, 28, 0.9);

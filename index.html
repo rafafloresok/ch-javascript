@@ -22,12 +22,12 @@
                 </p>
             </main>
         </div>
+        <!-- BOTON SETTINGS -->
+        <button id="settings-btn" type="button" class="btn btn-link position-absolute top-0 end-0 me-3 fs-5 text-white">
+            <i class="bi bi-gear"></i>
+        </button>
     </div>
 
-    <!-- BOTON SETTINGS -->
-    <button id="settings" type="button" class="btn btn-link position-fixed top-0 end-0 fs-5 text-white">
-        <i class="bi bi-gear"></i>
-    </button>
 
     <!-- LOG IN -->
     <div id="container-log-in" class="container-fluid fixed-top vw-100 vh-100 p-2 pb-5 display-none">
@@ -86,6 +86,30 @@
 
     <!-- MENU -->
     <div class="container-fluid bg-dark min-vh-100">
+        <nav id="nav-bar" class="navbar navbar-expand navbar-light bg-light sticky-top">
+            <div class="container-fluid">
+              <a class="home-btn navbar-brand" href="#"><i class="bi bi-house-door"></i></a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                  <li class="nav-item">
+                    <a class="nav-link" href="#headingOne">Entradas</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#headingTwo">Principales</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#headingThree">Postres</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#headingFour">Bebidas</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+        </nav>
         <div class="accordion" id="accordionExample">
             <div class="accordion-item border-0">
                 <h2 class="accordion-header" id="headingOne">
