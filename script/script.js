@@ -196,7 +196,7 @@ function updateCart() {
 function takeCart() {
     cart = JSON.parse(sessionStorage.getItem("cart")) || [];
     cart.forEach(el => createOrderItem(el.description,el.price));
-    if (cart.length > 0) {
+    if (cart.length) {
         showOrderBtn.classList.remove("disabled");
         calcCost();
     }
@@ -253,8 +253,8 @@ function createMenuCard(type, description, price, available, source) {
 
     //CREAR A AGREGAR (VER DISABLE). INSERTAR EN CARD-BODY
     let buttonAdd = document.createElement("a");
-    buttonAdd["description"] = description;
-    buttonAdd["price"] = price;
+    buttonAdd.description = description;
+    buttonAdd.price = price;
     if (!available) {
         buttonAdd.classList.add("agregar", "btn", "btn-secondary","disabled");
         buttonAdd.textContent = "No disponible";
@@ -383,13 +383,14 @@ function createMenuAndSettings(products) {
     settingsList.innerHTML = "";
     //VOLVER A  LLENAR SECCIONES DEL MENU Y LISTA DE CONFIGURACION
     for (const menuItem of products) {
-        createMenuCard(menuItem.type, menuItem.description, menuItem.price, menuItem.available, menuItem.source);
-        createSettingsRow(menuItem.type, menuItem.description, menuItem.price, menuItem.available, menuItem.source);
+        let {type, description, price, available, source} = menuItem;
+        createMenuCard(type, description, price, available, source);
+        createSettingsRow(type, description, price, available, source);
     }
     //AGREGAR FUNCIONALIDAD A TODOS LOS BOTONES PARA AGREGAR AL PEDIDO
     addButtons = document.querySelectorAll(".agregar");
-    for (let i = 0; i < addButtons.length; i++) {
-        addButtons[i].addEventListener("click", function() {
+    addButtons.forEach(el => {
+        el.addEventListener("click", function() {
             let item = this.description,
                 precio = this.price
             ;
@@ -398,7 +399,7 @@ function createMenuAndSettings(products) {
             showOrderBtn.classList.remove("disabled");
             showAlert(item);
         })
-    }
+    });
 }
 
 //FUNCION PARA CONSTRUIR ITEMS DEL PEDIDO
@@ -550,10 +551,9 @@ saveSettingsBtn.addEventListener("click", () => {
     createMenuAndSettings(newMenuItems);
     orderList.innerHTML = "";
     updateCart();
-})
+});
 
 //AGREGAR FUNCIONALIDAD AL BOTON CANCELAR CAMBIOS
 cancelSettingsBtn.addEventListener("click", () => {
     hideSection(settingsContainer);
-    createMenuAndSettings(menuItems);
-})
+});
