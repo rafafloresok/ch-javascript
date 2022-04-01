@@ -15,14 +15,14 @@
 }
 
 /* LOG IN */
-#container-log-in {
+#log-in-container {
     z-index: 5;
     background: rgba(28, 28, 28, 0.9);
     overflow-y: scroll;
 }
 
 /* SETTINGS */
-#container-settings {
+#settings-container {
     z-index: 6;
     background: rgba(28, 28, 28, 0.9);
     overflow-y: scroll;
@@ -32,28 +32,27 @@
 #nav-bar {
     z-index: 1;
 }
-#container-pedido {
+#order-container {
     z-index: 1;
     background: rgba(28, 28, 28, 0.9);
     overflow-y: scroll;
 }
 
-#mostrar {
+#show-order-btn {
     z-index: 2;
     position: fixed;
     bottom: 1rem;
     right: 1rem;
 }
 
-#contador {
+#counter {
     z-index: 3;
     position: fixed;
     bottom: 1.5rem;
     right: 1.5rem;
 }
 
-#enviar {
-    /* z-index: 3; */
+#send-order-btn {
     position: fixed;
     bottom: 1rem;
     left: 1rem; 

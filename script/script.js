@@ -152,25 +152,31 @@ let rowEntradas = document.querySelector("#row-entradas"),
     rowPostres = document.querySelector("#row-postres"),
     rowBebidas = document.querySelector("#row-bebidas"),
     settingsList = document.querySelector("#settings-list"),
-    orderList = document.querySelector("#pedido"),
-    showOrderBtn = document.querySelector("#mostrar"),
-    orderContainer = document.querySelector("#container-pedido"),
-    counter = document.querySelector("#contador"),
-    sendOrder = document.querySelector("#enviar"),
-    showTotalCost = document.querySelector("#show-total-cost"),
+    orderList = document.querySelector("#order-list"),
+    showOrderBtn = document.querySelector("#show-order-btn"),
+    orderContainer = document.querySelector("#order-container"),
+    counter = document.querySelector("#counter"),
+    sendOrderBtn = document.querySelector("#send-order-btn"),
+    totalCost = document.querySelector("#total-cost"),
     front = document.querySelector("#front"),
-    showMenuBtn = document.querySelector("#show-menu"),
+    showMenuBtn = document.querySelector("#show-menu-btn"),
     alert = document.querySelector("#alert"),
     settingsBtn = document.querySelector("#settings-btn"),
-    logInContainer = document.querySelector("#container-log-in"),
-    logInCancelBtn = document.querySelector("#cancel-log-in"),
-    logInBtn = document.querySelector("#log-in-button"),
-    settingsContainer = document.querySelector("#container-settings"),
-    saveSettingsBtn = document.querySelector("#save-settings"),
-    cancelSettingsBtn = document.querySelector("#cancel-settings"),
+    logInContainer = document.querySelector("#log-in-container"),
+    cancelLogInBtn = document.querySelector("#cancel-log-in-btn"),
+    logInBtn = document.querySelector("#log-in-btn"),
+    settingsContainer = document.querySelector("#settings-container"),
+    saveSettingsBtn = document.querySelector("#save-settings-btn"),
+    cancelSettingsBtn = document.querySelector("#cancel-settings-btn"),
     cart = [],
     addButtons,
-    homeBtn = document.querySelector("#home-btn");
+    homeBtn = document.querySelector("#home-btn"),
+    userInput = document.querySelector("#user-input"),
+    passInput = document.querySelector("#pass-input"),
+    rememberCheck = document.querySelector("#remember-check"),
+    rejectedMessage = document.querySelector("#rejected-message"),
+    validUser = {user: "rafafloresok", pass: "rafa1234"},
+    getUserData = JSON.parse(localStorage.getItem("userData"))
 ;
 
 //CLASE PARA CREAR ITEMS DEL CARRITO
@@ -451,7 +457,7 @@ function toggleOrder() {
         hideSection(orderContainer);
         showOrderBtn.classList.add("disabled");
         setTimeout( () => {
-            if (showTotalCost.textContent > 0) {
+            if (totalCost.textContent > 0) {
                 showOrderBtn.classList.remove("disabled");
             };
             showOrderBtn.textContent = "Ver pedido";
@@ -467,10 +473,10 @@ function calcCost() {
     counter.textContent = prices.length;
     if (prices.length == 0) {
         toggleOrder();
-        showTotalCost.textContent = 0;
+        totalCost.textContent = 0;
         showOrderBtn.classList.add("disabled");
     } else {
-        showTotalCost.textContent = prices.reduce((acc,curr) => acc+curr);
+        totalCost.textContent = prices.reduce((acc,curr) => acc+curr);
     }
 }
 
@@ -506,6 +512,12 @@ function hideSection(section) {
 //LEVANTAR CARRITO DE SESSION STORAGE
 takeCart();
 
+//LEVANTAR DATOS DE USUARIO DE LOCAL STORAGE
+if (getUserData != null) {
+    userInput.value = getUserData.user;
+    passInput.value = getUserData.pass;
+}
+
 //CREAR MENU Y LISTA DE CONFIGURACION
 createMenuAndSettings(menuItems);
 
@@ -522,12 +534,22 @@ showOrderBtn.addEventListener("click", () => toggleOrder());
 settingsBtn.addEventListener("click", () => showSection(logInContainer));
 
 //AGREGAR FUNCIONALIDAD AL BOTON CANCELAR LOG IN
-logInCancelBtn.addEventListener("click", () => hideSection(logInContainer));
+cancelLogInBtn.addEventListener("click", () => {
+    hideSection(logInContainer);
+    rejectedMessage.classList.add("display-none");
+});
 
 //AGREGAR FUNCIONALIDAD AL BOTON LOG IN
 logInBtn.addEventListener("click", () => {
-    hideSection(logInContainer);
-    showSection(settingsContainer);
+    let userData = {user: userInput.value, pass: passInput.value};
+    if (userData.user == validUser.user && userData.pass == validUser.pass) {
+        rejectedMessage.classList.add("display-none");
+        rememberCheck.checked ? localStorage.setItem("userData", JSON.stringify(userData)) : localStorage.removeItem("userData");
+        hideSection(logInContainer);
+        showSection(settingsContainer);
+    } else {
+        rejectedMessage.classList.remove("display-none");
+    }
 });
 
 //AGREGAR FUNCIONALIDAD AL BOTON GUARDAR CAMBIOS
