@@ -513,7 +513,7 @@ createMenuAndSettings(menuItems);
 //AGREGAR FUNCIONALIDAD AL BOTON DE VER MENÚ
 showMenuBtn.addEventListener("click", () => hideSection(front));
 
-//AGREGAR FUNCIONALIDAD A BOTONES HOME
+//AGREGAR FUNCIONALIDAD A BOTON HOME
 homeBtn.addEventListener("click", () => showSection(front));
 
 //AGREGAR FUNCIONALIDAD AL BOTON MOSTRAR PEDIDO
