@@ -168,7 +168,7 @@ let rowEntradas = document.querySelector("#row-entradas"),
     settingsContainer = document.querySelector("#settings-container"),
     saveSettingsBtn = document.querySelector("#save-settings-btn"),
     cancelSettingsBtn = document.querySelector("#cancel-settings-btn"),
-    cart = [],
+    order = [],
     addButtons,
     homeBtn = document.querySelector("#home-btn"),
     userInput = document.querySelector("#user-input"),
@@ -176,11 +176,12 @@ let rowEntradas = document.querySelector("#row-entradas"),
     rememberCheck = document.querySelector("#remember-check"),
     rejectedMessage = document.querySelector("#rejected-message"),
     validUser = {user: "rafafloresok", pass: "rafa1234"},
-    getUserData = JSON.parse(localStorage.getItem("userData"))
+    getUserData = JSON.parse(localStorage.getItem("userData")),
+    totalCostContainer = document.querySelector("#total-cost-container")
 ;
 
-//CLASE PARA CREAR ITEMS DEL CARRITO
-class CartItem {
+//CLASE PARA CREAR ITEMS DEL PEDIDO
+class OrderItem {
     constructor(description,price) {
         this.description = description;
         this.price = price;
@@ -190,21 +191,31 @@ class CartItem {
 /* --------- */
 /* FUNCIONES */
 /* --------- */
-//FUNCION PARA ACTUALIZAR CARRITO EN SESSION STORAGE
-function updateCart() {
-    cart = []; 
+//FUNCION PARA ACTUALIZAR PEDIDO
+function updateOrder() {
+    order = []; 
     let listItems = document.querySelectorAll(".list-group-item");
-    listItems.forEach(el => cart.push(new CartItem(el.description,el.price)));
-    sessionStorage.setItem("cart",JSON.stringify(cart));
+    let prices = [];
+    listItems.forEach(el => {
+        order.push(new OrderItem(el.description,el.price));
+        prices.push(el.price);
+    });
+    sessionStorage.setItem("order",JSON.stringify(order));
+    counter.textContent = order.length;
+    totalCost.textContent = prices.reduce(((acc,curr) => acc + curr),0);
+    if (!order.length) {
+        toggleOrder();
+        showOrderBtn.classList.add("disabled");
+    }
 }
 
-//FUNCION PARA LEVANTAR CARRITO DE SESSION STORAGE
-function takeCart() {
-    cart = JSON.parse(sessionStorage.getItem("cart")) || [];
-    cart.forEach(el => createOrderItem(el.description,el.price));
-    if (cart.length) {
+//FUNCION PARA LEVANTAR PEDIDO DE SESSION STORAGE
+function takeOrder() {
+    order = JSON.parse(sessionStorage.getItem("order")) || [];
+    order.forEach(el => createOrderItem(el.description,el.price));
+    if (order.length) {
         showOrderBtn.classList.remove("disabled");
-        calcCost();
+        updateOrder();
     }
 }
 
@@ -401,9 +412,13 @@ function createMenuAndSettings(products) {
                 precio = this.price
             ;
             createOrderItem (item,precio);
-            updateCart();
             showOrderBtn.classList.remove("disabled");
-            showAlert(item);
+            alert.innerHTML = `Agregado: <span class="fw-bold">${item}</span>`;
+            alert.classList.remove("display-none");
+            setTimeout(() => {
+                updateOrder();
+                alert.classList.add("display-none");
+            },1200);
         })
     });
 }
@@ -438,8 +453,7 @@ function createOrderItem(item, precio) {
         listItem.classList.add("out-item");
         setTimeout(() => {
             listItem.remove();
-            updateCart();
-            calcCost();
+            updateOrder();
         },800);
     })
 }
@@ -465,31 +479,6 @@ function toggleOrder() {
     };
 }
 
-//FUNCION PARA ACTUALIZAR COSTO TOTAL Y CONTADOR DE ITEMS
-function calcCost() {
-    let infoProducts = document.querySelectorAll(".info-prod"),
-        prices = [];
-    infoProducts.forEach(el => prices.push(parseFloat(el.innerHTML.split("$").pop().slice(0,-2))));
-    counter.textContent = prices.length;
-    if (prices.length == 0) {
-        toggleOrder();
-        totalCost.textContent = 0;
-        showOrderBtn.classList.add("disabled");
-    } else {
-        totalCost.textContent = prices.reduce((acc,curr) => acc+curr);
-    }
-}
-
-//FUNCION PARA MOSTRAR ALERTA DE ITEM AGREGADO
-function showAlert(item) {
-    alert.textContent = `Agregado: ${item}`;
-    alert.classList.remove("display-none");
-    setTimeout(() => {
-        alert.classList.add("display-none");
-        calcCost();
-    },1200);
-}
-
 //FUNCION PARA MOSTRAR SECCION
 function showSection(section) {
     section.classList.remove("display-none");
@@ -509,8 +498,8 @@ function hideSection(section) {
 /* --------- */
 /* EJECUCION */
 /* --------- */
-//LEVANTAR CARRITO DE SESSION STORAGE
-takeCart();
+//LEVANTAR PEDIDO DE SESSION STORAGE
+takeOrder();
 
 //LEVANTAR DATOS DE USUARIO DE LOCAL STORAGE
 if (getUserData != null) {
@@ -529,6 +518,30 @@ homeBtn.addEventListener("click", () => showSection(front));
 
 //AGREGAR FUNCIONALIDAD AL BOTON MOSTRAR PEDIDO
 showOrderBtn.addEventListener("click", () => toggleOrder());
+
+//AGREGAR FUNCIONALIDAD AL BOTON ENVIAR PEDIDO
+sendOrderBtn.addEventListener("click", () => {
+    let listItems = document.querySelectorAll(".list-group-item");
+    for (let i = 0; i < listItems.length; i++) {
+        let factor = 150;
+        let time = i*factor;
+        setTimeout(() => {
+            listItems[i].classList.add("send-item");
+            if (i == listItems.length-1) {
+                setTimeout(() => {
+                    totalCostContainer.classList.add("send-item");
+                    setTimeout(() => {
+                        orderList.innerHTML = "";
+                        updateOrder();
+                        setTimeout(() => {
+                            totalCostContainer.classList.remove("send-item");
+                        }, 1000);
+                    }, 1000);
+                }, factor);
+            }
+        }, time);
+    }
+});
 
 //AGREGAR FUNCIONALIDAD AL BOTON SETTINGS
 settingsBtn.addEventListener("click", () => showSection(logInContainer));
@@ -572,7 +585,7 @@ saveSettingsBtn.addEventListener("click", () => {
     hideSection(settingsContainer);
     createMenuAndSettings(newMenuItems);
     orderList.innerHTML = "";
-    updateCart();
+    updateOrder();
 });
 
 //AGREGAR FUNCIONALIDAD AL BOTON CANCELAR CAMBIOS

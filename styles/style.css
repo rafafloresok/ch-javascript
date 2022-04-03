@@ -81,7 +81,6 @@
     animation: to-up 1s ease;
     animation-fill-mode: forwards;
 }
-
 @keyframes to-up {
     100% {
         transform: translateY(-100%);
@@ -92,7 +91,6 @@
     animation: from-up 1s ease;
     animation-fill-mode: forwards;
 }
-
 @keyframes from-up {
     0% {
         transform: translateY(-100%);
@@ -106,7 +104,6 @@
     animation: card-scale 1s ease;
     animation-fill-mode: forwards;
 }
-
 @keyframes card-scale {
     100% {
         transform: scale(1.05);
@@ -117,10 +114,20 @@
     animation: out-item 1s 0s ease;
     animation-fill-mode: forwards;
 }
-
 @keyframes out-item {
     100% {
         opacity: 0;
         transform: translatex(-100%);
+    }
+}
+
+.send-item {
+    animation: send-item 1s 0s ease;
+    animation-fill-mode: forwards;
+}
+@keyframes send-item {
+    100% {
+        opacity: 0;
+        transform: translatex(100%);
     }
 }
