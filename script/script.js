@@ -192,7 +192,8 @@ class OrderItem {
 /* FUNCIONES */
 /* --------- */
 //FUNCION PARA ACTUALIZAR PEDIDO
-function updateOrder() {
+function updateOrder(clean) {
+    if (clean === "clean") {orderList.innerHTML = ""};
     order = []; 
     let listItems = document.querySelectorAll(".list-group-item");
     let prices = [];
@@ -392,12 +393,13 @@ function createSettingsRow(type, description, price, available, source) {
 
 //FUNCION PARA CREAR MENU Y LISTA DE CONFIGURACION
 function createMenuAndSettings(products) {
-    //LIMPIAR SECCIONES DEL MENU Y LISTA DE CONFIGURACION
+    //LIMPIAR SECCIONES DEL MENU, LISTA DE CONFIGURACION Y PEDIDO
     rowEntradas.innerHTML = "";
     rowPrincipales.innerHTML = "";
     rowPostres.innerHTML = "";
     rowBebidas.innerHTML = "";
     settingsList.innerHTML = "";
+    orderList.innerHTML = "";
     //VOLVER A  LLENAR SECCIONES DEL MENU Y LISTA DE CONFIGURACION
     for (const menuItem of products) {
         let {type, description, price, available, source} = menuItem;
@@ -460,7 +462,7 @@ function createOrderItem(item, precio) {
 
 //FUNCION PARA MOSTRAR-OCULTAR PEDIDO
 function toggleOrder() {
-    if (showOrderBtn.textContent == "Ver pedido") {
+    if (showOrderBtn.textContent == "Ver pedido" && order.length != 0) {
         showSection(orderContainer);
         showOrderBtn.classList.add("disabled");
         setTimeout( () => {
@@ -475,6 +477,7 @@ function toggleOrder() {
                 showOrderBtn.classList.remove("disabled");
             };
             showOrderBtn.textContent = "Ver pedido";
+            totalCostContainer.classList.remove("send-item");
         },1000);
     };
 }
@@ -531,12 +534,14 @@ sendOrderBtn.addEventListener("click", () => {
                 setTimeout(() => {
                     totalCostContainer.classList.add("send-item");
                     setTimeout(() => {
-                        orderList.innerHTML = "";
-                        updateOrder();
-                        setTimeout(() => {
-                            totalCostContainer.classList.remove("send-item");
-                        }, 1000);
-                    }, 1000);
+                        Swal.fire({
+                            title: 'Pedido enviado',
+                            text: 'En caso de requerirlo puede realizar otro pedido.',
+                            icon: 'success',
+                            confirmButtonText: 'Aceptar',
+                        });
+                        updateOrder("clean");
+                    }, 300);
                 }, factor);
             }
         }, time);
@@ -584,8 +589,14 @@ saveSettingsBtn.addEventListener("click", () => {
     }
     hideSection(settingsContainer);
     createMenuAndSettings(newMenuItems);
-    orderList.innerHTML = "";
     updateOrder();
+    Swal.fire({
+        title: 'Cambios guardados',
+        text: 'El menú fue actualizado.',
+        icon: 'success',
+        showConfirmButton: false,
+        timer: 3500
+    });
 });
 
 //AGREGAR FUNCIONALIDAD AL BOTON CANCELAR CAMBIOS
