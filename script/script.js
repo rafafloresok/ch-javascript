@@ -1,7 +1,7 @@
 /* ------------------ */
 /* LISTA DE PRODUCTOS */
 /* ------------------ */
-let menuItems = [
+let menuItems = JSON.parse(localStorage.getItem("menuItems")) || [
     {
         type: "Entradas",
         description: "Rabas",
@@ -213,7 +213,9 @@ function updateOrder(clean) {
 //FUNCION PARA LEVANTAR PEDIDO DE SESSION STORAGE
 function takeOrder() {
     order = JSON.parse(sessionStorage.getItem("order")) || [];
-    order.forEach(el => createOrderItem(el.description,el.price));
+    order.forEach(el => {
+        createOrderItem(el.description,el.price);
+    });
     if (order.length) {
         showOrderBtn.classList.remove("disabled");
         updateOrder();
@@ -399,7 +401,6 @@ function createMenuAndSettings(products) {
     rowPostres.innerHTML = "";
     rowBebidas.innerHTML = "";
     settingsList.innerHTML = "";
-    orderList.innerHTML = "";
     //VOLVER A  LLENAR SECCIONES DEL MENU Y LISTA DE CONFIGURACION
     for (const menuItem of products) {
         let {type, description, price, available, source} = menuItem;
@@ -414,12 +415,12 @@ function createMenuAndSettings(products) {
                 precio = this.price
             ;
             createOrderItem (item,precio);
-            showOrderBtn.classList.remove("disabled");
             alert.innerHTML = `Agregado: <span class="fw-bold">${item}</span>`;
             alert.classList.remove("display-none");
             setTimeout(() => {
                 updateOrder();
                 alert.classList.add("display-none");
+                showOrderBtn.classList.remove("disabled");
             },1200);
         })
     });
@@ -587,9 +588,10 @@ saveSettingsBtn.addEventListener("click", () => {
         obj.source = sources[i].value;
         newMenuItems.push(obj);
     }
+    localStorage.setItem("menuItems",JSON.stringify(newMenuItems));
     hideSection(settingsContainer);
     createMenuAndSettings(newMenuItems);
-    updateOrder();
+    updateOrder("clean");
     Swal.fire({
         title: 'Cambios guardados',
         text: 'El menú fue actualizado.',
