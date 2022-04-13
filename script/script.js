@@ -1,153 +1,8 @@
-/* ------------------ */
-/* LISTA DE PRODUCTOS */
-/* ------------------ */
-let menuItems = JSON.parse(localStorage.getItem("menuItems")) || [
-    {
-        type: "Entradas",
-        description: "Rabas",
-        price: 1590,
-        available: false,
-        source: "images/rabas.jpg"
-    },
-    {
-        type: "Entradas",
-        description: "Langostinos empanados",
-        price: 1600,
-        available: true,
-        source: "images/langostinos.jpg"
-    },
-    {
-        type: "Entradas",
-        description: "Berenjena Parmesana",
-        price: 990,
-        available: true,
-        source: "images/berenjena.jpg"
-    },
-    {
-        type: "Entradas",
-        description: "Bruschetta",
-        price: 1200,
-        available: true,
-        source: "images/bruschetta.jpg"
-    },
-    {
-        type: "Entradas",
-        description: "Mollejas crocantes",
-        price: 1650,
-        available: true,
-        source: "images/mollejas.jpg"
-    },
-    {
-        type: "Principales",
-        description: "Ojo de bife con papas asadas",
-        price: 1750,
-        available: true,
-        source: "images/ojo_de_bife.jpg"
-    },
-    {
-        type: "Principales",
-        description: "Pollo a la mostaza con vegetales asados",
-        price: 1350,
-        available: true,
-        source: "images/pollo.jpg"
-    },
-    {
-        type: "Principales",
-        description: "Trucha con arroz cremoso",
-        price: 1650,
-        available: false,
-        source: "images/trucha.jpg"
-    },
-    {
-        type: "Principales",
-        description: "Entraña con puré rústico",
-        price: 1400,
-        available: true,
-        source: "images/entrania.jpg"
-    },
-    {
-        type: "Principales",
-        description: "Ravioles de salmón con salsa de tomates",
-        price: 1650,
-        available: true,
-        source: "images/ravioles.jpg"
-    },
-    {
-        type: "Postres",
-        description: "Volcán de chocolate",
-        price: 790,
-        available: true,
-        source: "images/volcan.jpg"
-    },
-    {
-        type: "Postres",
-        description: "Creme brulee",
-        price: 500,
-        available: true,
-        source: "images/creme_brulee.jpg"
-    },
-    {
-        type: "Postres",
-        description: "Flan casero",
-        price: 520,
-        available: true,
-        source: "images/flan.jpg"
-    },
-    {
-        type: "Postres",
-        description: "Ensalada de frutas",
-        price: 590,
-        available: true,
-        source: "images/ensalada_frutas.jpg"
-    },
-    {
-        type: "Postres",
-        description: "Cheesecake con frutos del bosque",
-        price: 560,
-        available: false,
-        source: "images/cheseecake.jpg"
-    },
-    {
-        type: "Bebidas",
-        description: "Agua sin gas",
-        price: 210,
-        available: true,
-        source: "images/agua.jpg"
-    },
-    {
-        type: "Bebidas",
-        description: "Jugo exprimido de naranja",
-        price: 400,
-        available: true,
-        source: "images/exprimido.jpg"
-    },
-    {
-        type: "Bebidas",
-        description: "Cerveza Cape Horn",
-        price: 560,
-        available: false,
-        source: "images/cerveza.jpg"
-    },
-    {
-        type: "Bebidas",
-        description: "Vino Tinto Amalaya Corte Único",
-        price: 1100,
-        available: true,
-        source: "images/vino_tinto.jpg"
-    },
-    {
-        type: "Bebidas",
-        description: "Vino Blanco Norton Cosecha Tardía",
-        price: 900,
-        available: true,
-        source: "images/vino_blanco.jpg"
-    },
-];
-
 /* --------- */
 /* VARIABLES */
 /* --------- */
-let rowEntradas = document.querySelector("#row-entradas"),
+let menuItems,
+    rowEntradas = document.querySelector("#row-entradas"),
     rowPrincipales = document.querySelector("#row-principales"),
     rowPostres = document.querySelector("#row-postres"),
     rowBebidas = document.querySelector("#row-bebidas"),
@@ -179,7 +34,6 @@ let rowEntradas = document.querySelector("#row-entradas"),
     getUserData = JSON.parse(localStorage.getItem("userData")),
     totalCostContainer = document.querySelector("#total-cost-container")
 ;
-
 //CLASE PARA CREAR ITEMS DEL PEDIDO
 class OrderItem {
     constructor(description,price) {
@@ -191,6 +45,41 @@ class OrderItem {
 /* --------- */
 /* FUNCIONES */
 /* --------- */
+//FUNCIONES PARA LEVANTAR LISTA DE PRODUCTOS
+async function getData() {
+    const response = await fetch('script/data.json');
+    menuItems = await response.json();
+    createMenuAndSettings(menuItems);
+}
+function takeMenuItems() {
+    if (!localStorage.getItem("menuItems")) {
+        getData();
+    } else {
+        menuItems = JSON.parse(localStorage.getItem("menuItems"));
+        createMenuAndSettings(menuItems);
+    }
+}
+
+//FUNCION PARA LEVANTAR PEDIDO DE SESSION STORAGE
+function takeOrder() {
+    order = JSON.parse(sessionStorage.getItem("order")) || [];
+    order.forEach(el => {
+        createOrderItem(el.description,el.price);
+    });
+    if (order.length) {
+        showOrderBtn.classList.remove("disabled");
+        updateOrder();
+    }
+}
+
+//FUNCION PARA LEVANTAR DATOS DE USUARIO DE LOCAL STORAGE
+function takeUserData() {
+    if (getUserData != null) {
+        userInput.value = getUserData.user;
+        passInput.value = getUserData.pass;
+    }
+}
+
 //FUNCION PARA ACTUALIZAR PEDIDO
 function updateOrder(clean) {
     if (clean === "clean") {orderList.innerHTML = ""};
@@ -207,18 +96,6 @@ function updateOrder(clean) {
     if (!order.length) {
         toggleOrder();
         showOrderBtn.classList.add("disabled");
-    }
-}
-
-//FUNCION PARA LEVANTAR PEDIDO DE SESSION STORAGE
-function takeOrder() {
-    order = JSON.parse(sessionStorage.getItem("order")) || [];
-    order.forEach(el => {
-        createOrderItem(el.description,el.price);
-    });
-    if (order.length) {
-        showOrderBtn.classList.remove("disabled");
-        updateOrder();
     }
 }
 
@@ -395,7 +272,7 @@ function createSettingsRow(type, description, price, available, source) {
 
 //FUNCION PARA CREAR MENU Y LISTA DE CONFIGURACION
 function createMenuAndSettings(products) {
-    //LIMPIAR SECCIONES DEL MENU, LISTA DE CONFIGURACION Y PEDIDO
+    //LIMPIAR SECCIONES DEL MENU Y LISTA DE CONFIGURACION
     rowEntradas.innerHTML = "";
     rowPrincipales.innerHTML = "";
     rowPostres.innerHTML = "";
@@ -506,13 +383,10 @@ function hideSection(section) {
 takeOrder();
 
 //LEVANTAR DATOS DE USUARIO DE LOCAL STORAGE
-if (getUserData != null) {
-    userInput.value = getUserData.user;
-    passInput.value = getUserData.pass;
-}
+takeUserData();
 
 //CREAR MENU Y LISTA DE CONFIGURACION
-createMenuAndSettings(menuItems);
+takeMenuItems();
 
 //AGREGAR FUNCIONALIDAD AL BOTON DE VER MENÚ
 showMenuBtn.addEventListener("click", () => hideSection(front));
