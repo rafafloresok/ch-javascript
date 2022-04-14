@@ -464,8 +464,11 @@ saveSettingsBtn.addEventListener("click", () => {
     }
     localStorage.setItem("menuItems",JSON.stringify(newMenuItems));
     hideSection(settingsContainer);
-    createMenuAndSettings(newMenuItems);
-    updateOrder("clean");
+    setTimeout(() => {
+        createMenuAndSettings(newMenuItems);
+        updateOrder("clean");
+        
+    }, 3500);
     Swal.fire({
         title: 'Cambios guardados',
         text: 'El menú fue actualizado.',
@@ -478,4 +481,11 @@ saveSettingsBtn.addEventListener("click", () => {
 //AGREGAR FUNCIONALIDAD AL BOTON CANCELAR CAMBIOS
 cancelSettingsBtn.addEventListener("click", () => {
     hideSection(settingsContainer);
+    Swal.fire({
+        title: 'No se han guardado los cambios',
+        text: 'En caso de haber hecho cambios, no se verán reflejados en el menú.',
+        icon: 'warning',
+        showConfirmButton: false,
+        timer: 3500
+    });
 });
