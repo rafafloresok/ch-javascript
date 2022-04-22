@@ -32,7 +32,8 @@ let menuItems,
     rejectedMessage = document.querySelector("#rejected-message"),
     validUser = {user: "rafafloresok", pass: "rafa1234"},
     getUserData = JSON.parse(localStorage.getItem("userData")),
-    totalCostContainer = document.querySelector("#total-cost-container")
+    totalCostContainer = document.querySelector("#total-cost-container"),
+    form = document.querySelector("#form")
 ;
 //CLASE PARA CREAR ITEMS DEL PEDIDO
 class OrderItem {
@@ -83,12 +84,14 @@ function takeUserData() {
 //FUNCION PARA ACTUALIZAR PEDIDO
 function updateOrder(clean) {
     if (clean === "clean") {orderList.innerHTML = ""};
-    order = []; 
+    order = [];
+    form.innerHTML = '<input type="hidden" name="_next" value="https://rafafloresok.github.io/ch-javascript/"><input type="hidden" name="_captcha" value="false">'; 
     let listItems = document.querySelectorAll(".list-group-item");
     let prices = [];
-    listItems.forEach(el => {
+    listItems.forEach((el, index) => {
         order.push(new OrderItem(el.description,el.price));
         prices.push(el.price);
+        form.innerHTML += `<input class="display-none" type="text" name="${index+1} ${el.description}" value="${el.price}">`;
     });
     sessionStorage.setItem("order",JSON.stringify(order));
     counter.textContent = order.length;
@@ -415,6 +418,8 @@ sendOrderBtn.addEventListener("click", () => {
                             icon: 'success',
                             confirmButtonText: 'Aceptar',
                         });
+                        console.dir(form);
+                        form.submit();
                         updateOrder("clean");
                     }, 300);
                 }, factor);
